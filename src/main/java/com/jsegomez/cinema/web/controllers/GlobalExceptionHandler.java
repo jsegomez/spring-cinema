@@ -1,19 +1,26 @@
 package com.jsegomez.cinema.web.controllers;
 
-import com.jsegomez.cinema.domain.exceptions.NoResourceFoundException;
+import com.jsegomez.cinema.domain.exceptions.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.util.List;
 import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-    @ExceptionHandler(NoResourceFoundException.class)
-    public ResponseEntity<Map<String,Object>> handleNoResourceFoundException(NoResourceFoundException ex){
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<Map<String,Object>> handleResourceNotFoundException(ResourceNotFoundException ex){
         return buildResponse(HttpStatus.NOT_FOUND, ex.getMessage(), List.of(ex.getMessage()));
+    }
+
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<Map<String,Object>> handleUrlNotFound(NoResourceFoundException ex){
+        String message = "URL not found: " + ex.getResourcePath();
+        return buildResponse(HttpStatus.NOT_FOUND, message, List.of(message));
     }
 
     private ResponseEntity<Map<String, Object>> buildResponse(HttpStatus status, String message, List<String> errors) {

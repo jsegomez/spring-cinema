@@ -1,7 +1,7 @@
 package com.jsegomez.cinema.domain.service;
 
 import com.jsegomez.cinema.domain.dto.MovieDto;
-import com.jsegomez.cinema.domain.exceptions.NoResourceFoundException;
+import com.jsegomez.cinema.domain.exceptions.ResourceNotFoundException;
 import com.jsegomez.cinema.domain.repository.MovieRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ public class MovieService {
     }
 
     public MovieDto findById(Long id) {
-        return movieRepository.findById(id).orElseThrow( () -> new NoResourceFoundException("Movie ", id) );
+        return movieRepository.findById(id).orElseThrow( () -> new ResourceNotFoundException("Movie", id) );
     }
 
     public boolean deleteById(Long id) {
