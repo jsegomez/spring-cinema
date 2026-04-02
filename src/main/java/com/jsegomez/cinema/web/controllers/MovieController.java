@@ -2,6 +2,7 @@ package com.jsegomez.cinema.web.controllers;
 
 import com.jsegomez.cinema.domain.dto.MovieDto;
 import com.jsegomez.cinema.domain.service.MovieService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +23,11 @@ public class MovieController {
     @GetMapping("/{id}")
     public ResponseEntity<MovieDto> findById(@PathVariable long id) {
         return ResponseEntity.ok(movieService.findById(id));
+    }
+
+    @PostMapping
+    public ResponseEntity<MovieDto> save(@Valid @RequestBody MovieDto movie) {
+        return ResponseEntity.ok(movieService.save(movie));
     }
 
     @DeleteMapping("/{id}")

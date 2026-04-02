@@ -21,6 +21,10 @@ public class MovieService {
         return movieRepository.findById(id).orElseThrow( () -> new ResourceNotFoundException("Movie", id) );
     }
 
+    public MovieDto save(MovieDto movie) {
+        return movieRepository.save(movie);
+    }
+
     public boolean deleteById(Long id) {
         return movieRepository.deleteById(id);
     }
