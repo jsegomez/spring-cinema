@@ -1,5 +1,6 @@
 package com.jsegomez.cinema.persistence.entity;
 
+import com.jsegomez.cinema.persistence.entity.enums.MovieGenre;
 import com.jsegomez.cinema.persistence.entity.enums.MovieRating;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -29,12 +30,16 @@ public class MovieEntity {
     @Column(name = "mv_score", precision = 4, scale = 2, nullable = false)
     private BigDecimal mvScore;
 
-    @Column(name = "mv_release_date",  nullable = true )
+    @Column(name = "mv_release_date",  nullable = false )
     private LocalDate mvReleaseDate;
 
     @Column(name = "mv_rating",  nullable = false)
     @Enumerated(EnumType.STRING)
     private MovieRating mvRating;
+
+    @Column(name = "mv_genre", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private MovieGenre mvGenre;
 
     @Column(name = "mv_available", nullable = false)
     private Boolean mvAvailable;

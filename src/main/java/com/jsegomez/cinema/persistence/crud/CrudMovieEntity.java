@@ -1,7 +1,12 @@
 package com.jsegomez.cinema.persistence.crud;
 
 import com.jsegomez.cinema.persistence.entity.MovieEntity;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface CrudMovieEntity extends CrudRepository<MovieEntity, Long> {
+import java.util.List;
+
+public interface CrudMovieEntity extends JpaRepository<MovieEntity, Long> {
+    List<MovieEntity> findAllByOrderByMvIdAsc();
+
+    List<MovieEntity> findByMvTitleContainingIgnoreCase(String mvTitle);
 }

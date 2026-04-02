@@ -1,6 +1,7 @@
 package com.jsegomez.cinema.domain.dto;
 
 import com.jsegomez.cinema.persistence.entity.enums.MovieRating;
+import com.jsegomez.cinema.persistence.entity.enums.MovieGenre;
 import jakarta.validation.constraints.*;
 
 import java.math.BigDecimal;
@@ -22,10 +23,13 @@ public record MovieDto(
         BigDecimal score,
 
         @NotNull(message = "Release date is required")
-        LocalDate ReleaseDate,
+        LocalDate releaseDate,
 
         @NotNull(message = "Rating is required")
         MovieRating rating,
+
+        @NotNull(message = "Genre is required")
+        MovieGenre genre,
 
         @NotNull(message = "Available is required")
         Boolean available

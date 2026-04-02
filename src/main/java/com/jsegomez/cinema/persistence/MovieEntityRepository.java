@@ -3,6 +3,7 @@ package com.jsegomez.cinema.persistence;
 import com.jsegomez.cinema.domain.dto.MovieDto;
 import com.jsegomez.cinema.domain.repository.MovieRepository;
 import com.jsegomez.cinema.persistence.crud.CrudMovieEntity;
+import com.jsegomez.cinema.persistence.entity.MovieEntity;
 import com.jsegomez.cinema.persistence.mapper.MovieMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -22,13 +23,19 @@ public class MovieEntityRepository implements MovieRepository {
     }
 
     @Override
+    public List<MovieDto> findAllByOrderByMvIdAsc() {
+        return this.movieMapper.toDtoList(crudMovieEntity.findAllByOrderByMvIdAsc());
+    }
+
+    @Override
     public Optional<MovieDto> findById(Long id) {
         return crudMovieEntity.findById(id).map(movieMapper::toDto);
     }
 
     @Override
     public MovieDto save(MovieDto movie) {
-        return null;
+        MovieEntity movieEntity = movieMapper.toEntity(movie);
+        return this.movieMapper.toDto(crudMovieEntity.save(movieEntity));
     }
 
     @Override
@@ -48,5 +55,10 @@ public class MovieEntityRepository implements MovieRepository {
     @Override
     public boolean existsById(Long id) {
         return crudMovieEntity.existsById(id);
+    }
+
+    @Override
+    public List<MovieDto> findByTitle(String title) {
+        return this.movieMapper.toDtoList(crudMovieEntity.findByMvTitleContainingIgnoreCase(title));
     }
 }

@@ -15,9 +15,10 @@ public interface MovieMapper {
     @Mapping(target = "title",       source = "mvTitle")
     @Mapping(target = "duration",    source = "mvDuration")
     @Mapping(target = "score",       source = "mvScore")
-    @Mapping(target = "ReleaseDate", source = "mvReleaseDate")
+    @Mapping(target = "releaseDate", source = "mvReleaseDate")
     @Mapping(target = "rating",      source = "mvRating")
     @Mapping(target = "available",   source = "mvAvailable")
+    @Mapping(target = "genre",       source = "mvGenre")
     MovieDto toDto(MovieEntity entity);
 
     @InheritInverseConfiguration(name = "toDto")

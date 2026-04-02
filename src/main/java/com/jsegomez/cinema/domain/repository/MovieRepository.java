@@ -9,6 +9,8 @@ public interface MovieRepository {
 
     List<MovieDto> findAll();
 
+    List<MovieDto> findAllByOrderByMvIdAsc();
+
     Optional<MovieDto> findById(Long id);
 
     MovieDto save(MovieDto movie);
@@ -18,4 +20,6 @@ public interface MovieRepository {
     boolean deleteById(Long id);
 
     boolean existsById(Long id);
+
+    List<MovieDto> findByTitle(String title);
 }

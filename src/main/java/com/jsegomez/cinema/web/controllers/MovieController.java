@@ -17,7 +17,7 @@ public class MovieController {
 
     @GetMapping
     public ResponseEntity<List<MovieDto>> findAll() {
-        return ResponseEntity.ok(movieService.findAll());
+        return ResponseEntity.ok(movieService.findAllByOrderByMvIdDesc());
     }
 
     @GetMapping("/{id}")
@@ -35,5 +35,10 @@ public class MovieController {
         return movieService.deleteById(id)
                 ? ResponseEntity.noContent().build()    // 204
                 : ResponseEntity.notFound().build();     // 404
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<MovieDto>> findByTitle(@RequestParam String title) {
+        return ResponseEntity.ok(movieService.findByTitle(title));
     }
 }

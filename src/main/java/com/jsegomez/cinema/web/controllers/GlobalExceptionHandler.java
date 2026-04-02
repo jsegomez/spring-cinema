@@ -1,8 +1,10 @@
 package com.jsegomez.cinema.web.controllers;
 
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.jsegomez.cinema.domain.exceptions.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -31,6 +33,20 @@ public class GlobalExceptionHandler {
         String message = "URL not found: " + ex.getResourcePath();
         return buildResponse(HttpStatus.NOT_FOUND, message, List.of(message));
     }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<Map<String,Object>> handleNotReadable(HttpMessageNotReadableException ex) {
+        Throwable cause = ex.getCause();
+        String error;
+        if (cause instanceof InvalidFormatException ife) {
+            String field = ife.getPath().isEmpty() ? "unknown" : ife.getPath().get(0).getFieldName();
+            error = field + ": Invalid value '" + ife.getValue() + "' for type " + ife.getTargetType().getSimpleName();
+        } else {
+            error = "Malformed JSON request";
+        }
+        return buildResponse(HttpStatus.BAD_REQUEST, "Invalid request body", List.of(error));
+    }
+
 
     private ResponseEntity<Map<String, Object>> buildResponse(HttpStatus status, String message, List<String> errors) {
         Map<String, Object> body = Map.of(

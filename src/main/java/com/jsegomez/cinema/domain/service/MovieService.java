@@ -17,6 +17,10 @@ public class MovieService {
         return movieRepository.findAll();
     }
 
+    public List<MovieDto> findAllByOrderByMvIdDesc() {
+        return movieRepository.findAllByOrderByMvIdAsc();
+    }
+
     public MovieDto findById(Long id) {
         return movieRepository.findById(id).orElseThrow( () -> new ResourceNotFoundException("Movie", id) );
     }
@@ -27,5 +31,9 @@ public class MovieService {
 
     public boolean deleteById(Long id) {
         return movieRepository.deleteById(id);
+    }
+
+    public List<MovieDto> findByTitle(String title) {
+        return movieRepository.findByTitle(title);
     }
 }
