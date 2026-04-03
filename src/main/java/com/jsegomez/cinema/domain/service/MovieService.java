@@ -14,10 +14,6 @@ import java.util.List;
 public class MovieService {
     private final MovieRepository movieRepository;
 
-    public List<MovieDto> findAll() {
-        return movieRepository.findAll();
-    }
-
     public List<MovieDto> findAllByOrderByMvIdAsc() {
         return movieRepository.findAllByOrderByMvIdAsc();
     }

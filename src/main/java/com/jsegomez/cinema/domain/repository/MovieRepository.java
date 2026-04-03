@@ -8,8 +8,6 @@ import java.util.Optional;
 
 public interface MovieRepository {
 
-    List<MovieDto> findAll();
-
     List<MovieDto> findAllByOrderByMvIdAsc();
 
     Optional<MovieDto> findById(Long id);

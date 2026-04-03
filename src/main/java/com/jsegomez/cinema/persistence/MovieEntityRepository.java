@@ -19,11 +19,6 @@ public class MovieEntityRepository implements MovieRepository {
     private final MovieMapper movieMapper;
 
     @Override
-    public List<MovieDto> findAll() {
-        return this.movieMapper.toDtoList(crudMovieEntity.findAll());
-    }
-
-    @Override
     public List<MovieDto> findAllByOrderByMvIdAsc() {
         return this.movieMapper.toDtoList(crudMovieEntity.findAllByOrderByMvIdAsc());
     }

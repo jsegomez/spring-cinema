@@ -34,7 +34,7 @@ public class MovieController {
         return ResponseEntity.ok(movieService.findByTitle(title));
     }
 
-    @PatchMapping
+    @PostMapping
     public ResponseEntity<MovieDto> save(@Valid @RequestBody MovieDto movie) {
         MovieDto saved = movieService.save(movie);
         URI location = ServletUriComponentsBuilder
