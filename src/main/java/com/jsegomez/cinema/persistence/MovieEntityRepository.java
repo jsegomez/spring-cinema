@@ -7,6 +7,8 @@ import com.jsegomez.cinema.persistence.crud.CrudMovieEntity;
 import com.jsegomez.cinema.persistence.entity.MovieEntity;
 import com.jsegomez.cinema.persistence.mapper.MovieMapper;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -21,6 +23,11 @@ public class MovieEntityRepository implements MovieRepository {
     @Override
     public List<MovieDto> findAllByOrderByMvIdAsc() {
         return this.movieMapper.toDtoList(crudMovieEntity.findAllByOrderByMvIdAsc());
+    }
+
+    @Override
+    public Page<MovieDto> findAllPaged(Pageable pageable) {
+        return crudMovieEntity.findAll(pageable).map(movieMapper::toDto);
     }
 
     @Override

@@ -5,6 +5,8 @@ import com.jsegomez.cinema.domain.dto.UpdateMovieDto;
 import com.jsegomez.cinema.domain.exceptions.ResourceNotFoundException;
 import com.jsegomez.cinema.domain.repository.MovieRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,6 +18,10 @@ public class MovieService {
 
     public List<MovieDto> findAllByOrderByMvIdAsc() {
         return movieRepository.findAllByOrderByMvIdAsc();
+    }
+
+    public Page<MovieDto> findAllPaged(Pageable pageable) {
+        return movieRepository.findAllPaged(pageable);
     }
 
     public MovieDto findById(Long id) {

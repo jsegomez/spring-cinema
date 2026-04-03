@@ -5,6 +5,9 @@ import com.jsegomez.cinema.domain.dto.UpdateMovieDto;
 import com.jsegomez.cinema.domain.service.MovieService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -22,6 +25,11 @@ public class MovieController {
     @GetMapping
     public ResponseEntity<List<MovieDto>> findAll() {
         return ResponseEntity.ok(movieService.findAllByOrderByMvIdAsc());
+    }
+
+    @GetMapping("/paged")
+    public ResponseEntity<Page<MovieDto>> findAllPaged(@PageableDefault(size = 10, sort = "mvId") Pageable pageable) {
+        return ResponseEntity.ok(movieService.findAllPaged(pageable));
     }
 
     @GetMapping("/{id}")

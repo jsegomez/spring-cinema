@@ -2,6 +2,8 @@ package com.jsegomez.cinema.domain.repository;
 
 import com.jsegomez.cinema.domain.dto.MovieDto;
 import com.jsegomez.cinema.domain.dto.UpdateMovieDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -9,6 +11,8 @@ import java.util.Optional;
 public interface MovieRepository {
 
     List<MovieDto> findAllByOrderByMvIdAsc();
+
+    Page<MovieDto> findAllPaged(Pageable pageable);
 
     Optional<MovieDto> findById(Long id);
 
