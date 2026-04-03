@@ -16,11 +16,9 @@ public interface MovieRepository {
 
     MovieDto save(MovieDto movie);
 
-    MovieDto update(Long id, UpdateMovieDto changes);
+    Optional<MovieDto> update(Long id, UpdateMovieDto changes);
 
-    boolean deleteById(Long id);
-
-    boolean existsById(Long id);
+    void deleteById(Long id);
 
     List<MovieDto> findByTitle(String title);
 }

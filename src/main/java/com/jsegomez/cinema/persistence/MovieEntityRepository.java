@@ -2,7 +2,6 @@ package com.jsegomez.cinema.persistence;
 
 import com.jsegomez.cinema.domain.dto.MovieDto;
 import com.jsegomez.cinema.domain.dto.UpdateMovieDto;
-import com.jsegomez.cinema.domain.exceptions.ResourceNotFoundException;
 import com.jsegomez.cinema.domain.repository.MovieRepository;
 import com.jsegomez.cinema.persistence.crud.CrudMovieEntity;
 import com.jsegomez.cinema.persistence.entity.MovieEntity;
@@ -41,29 +40,17 @@ public class MovieEntityRepository implements MovieRepository {
     }
 
     @Override
-    public MovieDto update(Long id, UpdateMovieDto changes) {
-        MovieEntity movie = this.crudMovieEntity.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Movie", id));
-
-        movie.setMvTitle(changes.title());
-        movie.setMvReleaseDate(changes.releaseDate());
-        movie.setMvRating(changes.rating());
-
-        return this.movieMapper.toDto(this.crudMovieEntity.save(movie));
+    public Optional<MovieDto> update(Long id, UpdateMovieDto changes) {
+        return this.crudMovieEntity.findById(id)
+                .map(movie -> {
+                    this.movieMapper.updateEntityFromDto(changes, movie);
+                    return this.movieMapper.toDto(this.crudMovieEntity.save(movie));
+                });
     }
 
     @Override
-    public boolean deleteById(Long id) {
-        if (!crudMovieEntity.existsById(id)) {
-            return false;
-        }
+    public void deleteById(Long id) {
         crudMovieEntity.deleteById(id);
-        return true;
-    }
-
-    @Override
-    public boolean existsById(Long id) {
-        return crudMovieEntity.existsById(id);
     }
 
     @Override

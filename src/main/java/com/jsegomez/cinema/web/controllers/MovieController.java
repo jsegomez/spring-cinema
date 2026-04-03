@@ -7,6 +7,9 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 import java.util.List;
 
@@ -18,7 +21,7 @@ public class MovieController {
 
     @GetMapping
     public ResponseEntity<List<MovieDto>> findAll() {
-        return ResponseEntity.ok(movieService.findAllByOrderByMvIdDesc());
+        return ResponseEntity.ok(movieService.findAllByOrderByMvIdAsc());
     }
 
     @GetMapping("/{id}")
@@ -31,20 +34,25 @@ public class MovieController {
         return ResponseEntity.ok(movieService.findByTitle(title));
     }
 
-    @PostMapping
+    @PatchMapping
     public ResponseEntity<MovieDto> save(@Valid @RequestBody MovieDto movie) {
-        return ResponseEntity.ok(movieService.save(movie));
+        MovieDto saved = movieService.save(movie);
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(saved.id())
+                .toUri();
+        return ResponseEntity.created(location).body(saved);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<MovieDto> update(@PathVariable Long id, @Valid @RequestBody UpdateMovieDto movie) {
+    public ResponseEntity<MovieDto> update(@PathVariable Long id, @RequestBody UpdateMovieDto movie) {
         return ResponseEntity.ok(movieService.update(id, movie));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable Long id) {
-        return movieService.deleteById(id)
-                ? ResponseEntity.noContent().build()    // 204
-                : ResponseEntity.notFound().build();     // 404
+        movieService.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 }

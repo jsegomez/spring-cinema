@@ -2,9 +2,13 @@ package com.jsegomez.cinema.persistence.mapper;
 
 import com.jsegomez.cinema.domain.dto.MovieDto;
 import com.jsegomez.cinema.persistence.entity.MovieEntity;
+import com.jsegomez.cinema.domain.dto.UpdateMovieDto;
+import org.mapstruct.BeanMapping;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.NullValuePropertyMappingStrategy;
 
 import java.util.List;
 
@@ -24,7 +28,16 @@ public interface MovieMapper {
     @InheritInverseConfiguration(name = "toDto")
     MovieEntity toEntity(MovieDto dto);
 
-    List<MovieDto> toDtoList(Iterable<MovieEntity> entities);
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "mvTitle",       source = "title")
+    @Mapping(target = "mvReleaseDate", source = "releaseDate")
+    @Mapping(target = "mvRating",      source = "rating")
+    @Mapping(target = "mvId",          ignore = true)
+    @Mapping(target = "mvDuration",    ignore = true)
+    @Mapping(target = "mvScore",       ignore = true)
+    @Mapping(target = "mvGenre",       ignore = true)
+    @Mapping(target = "mvAvailable",   ignore = true)
+    void updateEntityFromDto(UpdateMovieDto dto, @MappingTarget MovieEntity entity);
 
-    List<MovieEntity> toEntityList(List<MovieDto> dtos);
+    List<MovieDto> toDtoList(Iterable<MovieEntity> entities);
 }

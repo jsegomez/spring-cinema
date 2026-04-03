@@ -4,13 +4,17 @@ import com.jsegomez.cinema.persistence.entity.enums.MovieGenre;
 import com.jsegomez.cinema.persistence.entity.enums.MovieRating;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-@Data
+@Getter
+@Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity

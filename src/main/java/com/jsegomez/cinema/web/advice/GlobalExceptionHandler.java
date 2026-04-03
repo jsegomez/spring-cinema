@@ -1,4 +1,4 @@
-package com.jsegomez.cinema.web.controllers;
+package com.jsegomez.cinema.web.advice;
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.jsegomez.cinema.domain.exceptions.ResourceNotFoundException;

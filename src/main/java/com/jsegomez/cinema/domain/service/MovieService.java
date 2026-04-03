@@ -4,7 +4,6 @@ import com.jsegomez.cinema.domain.dto.MovieDto;
 import com.jsegomez.cinema.domain.dto.UpdateMovieDto;
 import com.jsegomez.cinema.domain.exceptions.ResourceNotFoundException;
 import com.jsegomez.cinema.domain.repository.MovieRepository;
-import com.jsegomez.cinema.persistence.entity.MovieEntity;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +18,7 @@ public class MovieService {
         return movieRepository.findAll();
     }
 
-    public List<MovieDto> findAllByOrderByMvIdDesc() {
+    public List<MovieDto> findAllByOrderByMvIdAsc() {
         return movieRepository.findAllByOrderByMvIdAsc();
     }
 
@@ -32,11 +31,13 @@ public class MovieService {
     }
 
     public MovieDto update(Long id, UpdateMovieDto movie) {
-        return  null;
+        return movieRepository.update(id, movie)
+                .orElseThrow(() -> new ResourceNotFoundException("Movie", id));
     }
 
-    public boolean deleteById(Long id) {
-        return movieRepository.deleteById(id);
+    public void deleteById(Long id) {
+        findById(id);
+        movieRepository.deleteById(id);
     }
 
     public List<MovieDto> findByTitle(String title) {
