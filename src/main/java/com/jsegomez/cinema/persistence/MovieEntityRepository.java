@@ -1,6 +1,8 @@
 package com.jsegomez.cinema.persistence;
 
 import com.jsegomez.cinema.domain.dto.MovieDto;
+import com.jsegomez.cinema.domain.dto.UpdateMovieDto;
+import com.jsegomez.cinema.domain.exceptions.ResourceNotFoundException;
 import com.jsegomez.cinema.domain.repository.MovieRepository;
 import com.jsegomez.cinema.persistence.crud.CrudMovieEntity;
 import com.jsegomez.cinema.persistence.entity.MovieEntity;
@@ -39,8 +41,15 @@ public class MovieEntityRepository implements MovieRepository {
     }
 
     @Override
-    public Optional<MovieDto> update(Long id, MovieDto movie) {
-        return Optional.empty();
+    public MovieDto update(Long id, UpdateMovieDto changes) {
+        MovieEntity movie = this.crudMovieEntity.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Movie", id));
+
+        movie.setMvTitle(changes.title());
+        movie.setMvReleaseDate(changes.releaseDate());
+        movie.setMvRating(changes.rating());
+
+        return this.movieMapper.toDto(this.crudMovieEntity.save(movie));
     }
 
     @Override

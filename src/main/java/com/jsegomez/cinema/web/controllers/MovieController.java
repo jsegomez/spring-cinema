@@ -1,6 +1,7 @@
 package com.jsegomez.cinema.web.controllers;
 
 import com.jsegomez.cinema.domain.dto.MovieDto;
+import com.jsegomez.cinema.domain.dto.UpdateMovieDto;
 import com.jsegomez.cinema.domain.service.MovieService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -21,8 +22,13 @@ public class MovieController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MovieDto> findById(@PathVariable long id) {
+    public ResponseEntity<MovieDto> findById(@PathVariable Long id) {
         return ResponseEntity.ok(movieService.findById(id));
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<MovieDto>> findByTitle(@RequestParam String title) {
+        return ResponseEntity.ok(movieService.findByTitle(title));
     }
 
     @PostMapping
@@ -30,15 +36,15 @@ public class MovieController {
         return ResponseEntity.ok(movieService.save(movie));
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<MovieDto> update(@PathVariable Long id, @Valid @RequestBody UpdateMovieDto movie) {
+        return ResponseEntity.ok(movieService.update(id, movie));
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable Long id) {
         return movieService.deleteById(id)
                 ? ResponseEntity.noContent().build()    // 204
                 : ResponseEntity.notFound().build();     // 404
-    }
-
-    @GetMapping("/search")
-    public ResponseEntity<List<MovieDto>> findByTitle(@RequestParam String title) {
-        return ResponseEntity.ok(movieService.findByTitle(title));
     }
 }

@@ -1,8 +1,10 @@
 package com.jsegomez.cinema.domain.service;
 
 import com.jsegomez.cinema.domain.dto.MovieDto;
+import com.jsegomez.cinema.domain.dto.UpdateMovieDto;
 import com.jsegomez.cinema.domain.exceptions.ResourceNotFoundException;
 import com.jsegomez.cinema.domain.repository.MovieRepository;
+import com.jsegomez.cinema.persistence.entity.MovieEntity;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +29,10 @@ public class MovieService {
 
     public MovieDto save(MovieDto movie) {
         return movieRepository.save(movie);
+    }
+
+    public MovieDto update(Long id, UpdateMovieDto movie) {
+        return  null;
     }
 
     public boolean deleteById(Long id) {
