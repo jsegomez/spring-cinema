@@ -17,7 +17,7 @@ import java.util.Map;
 public class GlobalExceptionHandler {
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<Map<String,Object>> handleResourceNotFoundException(ResourceNotFoundException ex){
-        return buildResponse(HttpStatus.NOT_FOUND, ex.getMessage(), List.of(ex.getMessage()));
+        return buildResponse(HttpStatus.NOT_FOUND, ex.getMessage(), List.of());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -31,7 +31,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NoResourceFoundException.class)
     public ResponseEntity<Map<String,Object>> handleUrlNotFound(NoResourceFoundException ex){
         String message = "URL not found: " + ex.getResourcePath();
-        return buildResponse(HttpStatus.NOT_FOUND, message, List.of(message));
+        return buildResponse(HttpStatus.NOT_FOUND, message, List.of());
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
@@ -55,5 +55,5 @@ public class GlobalExceptionHandler {
                 "errors", errors
         );
         return new ResponseEntity<>(body, status);
-    };
+    }
 }
