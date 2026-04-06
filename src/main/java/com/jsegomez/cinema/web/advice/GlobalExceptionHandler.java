@@ -11,17 +11,17 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.util.List;
-import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<Map<String,Object>> handleResourceNotFoundException(ResourceNotFoundException ex){
+    public ResponseEntity<ErrorResponse> handleResourceNotFoundException(ResourceNotFoundException ex) {
         return buildResponse(HttpStatus.NOT_FOUND, ex.getMessage(), List.of());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String,Object>> handleValidationException(MethodArgumentNotValidException ex){
+    public ResponseEntity<ErrorResponse> handleValidationException(MethodArgumentNotValidException ex) {
         List<String> errors = ex.getBindingResult().getFieldErrors().stream()
                 .map(error -> error.getField() + ": " + error.getDefaultMessage())
                 .toList();
@@ -29,13 +29,13 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(NoResourceFoundException.class)
-    public ResponseEntity<Map<String,Object>> handleUrlNotFound(NoResourceFoundException ex){
+    public ResponseEntity<ErrorResponse> handleUrlNotFound(NoResourceFoundException ex) {
         String message = "URL not found: " + ex.getResourcePath();
         return buildResponse(HttpStatus.NOT_FOUND, message, List.of());
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<Map<String,Object>> handleNotReadable(HttpMessageNotReadableException ex) {
+    public ResponseEntity<ErrorResponse> handleNotReadable(HttpMessageNotReadableException ex) {
         Throwable cause = ex.getCause();
         String error;
         if (cause instanceof InvalidFormatException ife) {
@@ -47,13 +47,7 @@ public class GlobalExceptionHandler {
         return buildResponse(HttpStatus.BAD_REQUEST, "Invalid request body", List.of(error));
     }
 
-
-    private ResponseEntity<Map<String, Object>> buildResponse(HttpStatus status, String message, List<String> errors) {
-        Map<String, Object> body = Map.of(
-                "status", status.value(),
-                "message", message,
-                "errors", errors
-        );
-        return new ResponseEntity<>(body, status);
+    private ResponseEntity<ErrorResponse> buildResponse(HttpStatus status, String message, List<String> errors) {
+        return new ResponseEntity<>(new ErrorResponse(status.value(), message, errors), status);
     }
 }
