@@ -3,6 +3,8 @@ package com.jsegomez.cinema.web.controllers;
 import com.jsegomez.cinema.domain.dto.MovieDto;
 import com.jsegomez.cinema.domain.dto.UpdateMovieDto;
 import com.jsegomez.cinema.domain.service.MovieService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -19,6 +21,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/movies")
 @AllArgsConstructor
+@Tag(name = "Movies", description = "Endpoints for managing movies in the cinema application")
 public class MovieController {
     private final MovieService movieService;
 
@@ -28,6 +31,10 @@ public class MovieController {
     }
 
     @GetMapping("/paged")
+    @Operation(
+            summary = "Get a paginated list of movies",
+            description = "Returns a paginated list of movies sorted by ID in ascending order. You can specify the page number and size using query parameters."
+    )
     public ResponseEntity<Page<MovieDto>> findAllPaged(@PageableDefault(size = 10, sort = "mvId") Pageable pageable) {
         return ResponseEntity.ok(movieService.findAllPaged(pageable));
     }

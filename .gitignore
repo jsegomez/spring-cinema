@@ -37,6 +37,7 @@ out/
 .vscode/
 
 ### Sensitive configuration ###
+application.properties
 application-dev.properties
 application-prod.properties
 application-local.properties
