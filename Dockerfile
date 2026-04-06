@@ -1,8 +1,22 @@
+# Stage 1: Build
+FROM eclipse-temurin:21-jdk-alpine AS builder
+
+WORKDIR /app
+
+COPY gradlew .
+COPY gradle gradle
+COPY build.gradle .
+COPY settings.gradle .
+COPY src src
+
+RUN chmod +x gradlew && ./gradlew bootJar -x test
+
+# Stage 2: Run
 FROM eclipse-temurin:21-jre-alpine
 
 WORKDIR /app
 
-COPY build/libs/cinema-0.0.1-SNAPSHOT.jar app.jar
+COPY --from=builder /app/build/libs/*.jar app.jar
 
 EXPOSE 5000
 

@@ -36,6 +36,9 @@ out/
 ### VS Code ###
 .vscode/
 
+### Docker ###
+Dockerfile
+
 ### Sensitive configuration ###
 application.properties
 application-dev.properties
